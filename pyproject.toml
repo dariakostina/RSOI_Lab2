@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "rsoi-lab2"
+version = "0.1.0"
+description = ""
+authors = ["Daria Kostina <40323848+dariakostina@users.noreply.github.com>"]
+readme = "README.md"
+packages = [
+    {include  = "gateway_service", from="src" },
+    {include  = "library_service", from="src"},
+    {include  = "rating_service", from="src"}, 
+    {include  = "reservation_service", from="src"},
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.6"
+uvicorn = "^0.34.0"
+sqlmodel = "^0.0.22"
+httpx = "^0.28.1"
+pydantic-settings = "^2.7.1"
+psycopg2-binary = "^2.9.10"
+pydantic = "^2.10.5"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.8.6"
+mypy = "^1.14.1"
+pytest = "^8.3.4"
+pytest-mock = "^3.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

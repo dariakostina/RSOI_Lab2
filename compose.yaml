@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: library/postgres:16
+    restart: on-failure
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./postgres/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+
+  reservation_service:
+    build:
+      args:
+        - SERVICE_NAME=reservation_service
+    ports:
+      - "8070:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@postgres:5432/reservations
+
+  library_service:
+    build:
+      args:
+        - SERVICE_NAME=library_service
+    ports:
+      - "8060:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@postgres:5432/libraries
+
+  rating_service:
+    build:
+      args:
+        - SERVICE_NAME=rating_service
+    ports:
+      - "8050:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@postgres:5432/ratings
+
+  gateway_service:
+    build:
+      args: 
+        - SERVICE_NAME=gateway_service
+    ports:
+      - "8080:8000"
+    environment:
+      - RESERVATION_SERVICE_URL=http://reservation_service:8000
+      - LIBRARY_SERVICE_URL=http://library_service:8000
+      - RATING_SERVICE_URL=http://rating_service:8000
+
+volumes:
+  db-data:

@@ -1,0 +1,85 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gateway-service",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "gateway_service.main:app",
+                "--reload",
+                "--port",
+                "8080"
+            ],
+            "jinja": true,
+            "env": {
+                "LIBRARY_SERVICE_URL": "http://localhost:8060",
+                "RATING_SERVICE_URL": "http://localhost:8050",
+                "RESERVATION_SERVICE_URL": "http://localhost:8070"
+            }
+        },
+        {
+            "name": "library-service",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "library_service.main:app",
+                "--reload",
+                "--port",
+                "8060"
+            ],
+            "env": {
+                "DATABASE_URL": "sqlite:///library_service.db"
+            },
+            "jinja": true
+        },
+        {
+            "name": "rating-service",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "rating_service.main:app",
+                "--reload",
+                "--port",
+                "8050"
+            ],
+            "env": {
+                "DATABASE_URL": "sqlite:///rating_service.db"
+            },
+            "jinja": true
+        },
+        {
+            "name": "reservation-service",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "reservation_service.main:app",
+                "--reload",
+                "--port",
+                "8070"
+            ],
+            "env": {
+                "DATABASE_URL": "sqlite:///reservation_service.db"
+            },
+            "jinja": true
+        },
+    ],
+    "compounds": [
+        {
+            "name": "Run All Services",
+            "configurations": [
+                "gateway-service",
+                "library-service",
+                "rating-service",
+                "reservation-service"
+            ]
+        }
+    ]
+}
